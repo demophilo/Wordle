@@ -45,3 +45,27 @@ end
     @test !check_word_for_validity(word_vector, "Zinn")
     @test !check_word_for_validity(word_vector, "Zinnn") 
 end
+
+@testset "get_color_dict" begin
+	color_dict = get_color_dict()
+
+	@test color_dict["red"] == "\e[31m"
+	@test color_dict["green"] == "\e[32m"
+	@test color_dict["yellow"] == "\e[33m"
+	@test color_dict["blue"] == "\e[34m"
+	@test color_dict["purple"] == "\e[35m"
+	@test color_dict["lightblue"] == "\e[36m"
+	@test color_dict["white"] == "\e[37m"
+	@test color_dict["lightred"] == "\e[91m"
+	@test color_dict["green2"] == "\e[92m"
+	@test color_dict["lightyellow"] == "\e[93m"
+	@test color_dict["lightpurple"] == "\e[95m"
+	@test color_dict["cyan"] == "\e[96m"
+end
+
+@testset "colorize_string" begin
+	color_dict = get_color_dict()
+	colored_string = colorize_string("Hello World!", color_dict, "red")
+
+	@test colored_string == "\e[31mHello World!\e[0m"
+end
