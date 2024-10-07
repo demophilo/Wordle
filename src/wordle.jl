@@ -2,7 +2,7 @@ module wordle
 
 using JSON3
 
-export make_word_vector, word_list_path, cleanword, compare_strings, check_input
+export make_word_vector, word_list_path, cleanword, compare_strings, check_input_letters
 
 
 word_list_path = "data/raw/wortliste.json"
@@ -40,7 +40,8 @@ function compare_strings(word_to_guess::String, trial_string::String)
 	goal_letter_vector = collect(goal_word)
 	trial_letter_vector = collect(trial_word)
 	available_goal_vector = fill(1, length(goal_letter_vector))
-    right_trial_vector = fill(-1, length(trial_letter_vector))
+	right_trial_vector = fill(-1, length(trial_letter_vector))
+
 	for position ∈ eachindex(goal_letter_vector)
 		if goal_letter_vector[position] == trial_letter_vector[position]
 			available_goal_vector[position] = 0
@@ -78,7 +79,7 @@ function compare_strings(word_to_guess::String, trial_string::String)
 	return right_trial_vector
 end
 
-function check_input(word::String, length_word)::Bool
+function check_input_letters(word::String, length_word)::Bool
 	word = replace(word, r"\s+" => "")
 	if length(word) != length_word
 		return false
@@ -87,10 +88,17 @@ function check_input(word::String, length_word)::Bool
 	if !all(typeof(c) == Char && ('a' <= c <= 'z' || 'A' <= c <= 'Z' || c in "äöüßÄÖÜ") for c in word)
 		return false
 	end
-	
+
 	return true
 end
 
+function check_word_for_validity(word_vector::Vector{String}, word::String)::Bool
+	if word ∈ word_vector
+		return true
+	else
+		return false
+	end
+end
 end # module word
 
 
