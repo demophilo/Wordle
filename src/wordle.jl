@@ -39,9 +39,8 @@ function compare_strings(word_to_guess::String, trial_string::String)
 	trial_word = cleanword(lowercase(trial_string))
 	goal_letter_vector = collect(goal_word)
 	trial_letter_vector = collect(trial_word)
-	available_goal_vector = Int[1, 1, 1, 1, 1]
-	right_trial_vector = Int[-1, -1, -1, -1, -1]
-
+	available_goal_vector = fill(1, length(goal_letter_vector))
+    right_trial_vector = fill(-1, length(trial_letter_vector))
 	for position ∈ eachindex(goal_letter_vector)
 		if goal_letter_vector[position] == trial_letter_vector[position]
 			available_goal_vector[position] = 0
