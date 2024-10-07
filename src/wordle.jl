@@ -2,10 +2,10 @@ module wordle
 
 using JSON3
 
-export make_word_vector, word_list_path, cleanword, compare_strings, check_input_letters
+export make_word_vector, cleanword, compare_strings, check_input_letters, check_word_for_validity, input_trial
 
 
-word_list_path = "data/raw/wortliste.json"
+#word_list_path = "data/raw/wortliste.json"
 
 function make_word_vector(json_path::String, length_of_words::Int)
 	file = open(json_path, "r")
@@ -99,8 +99,20 @@ function check_word_for_validity(word_vector::Vector{String}, word::String)::Boo
 		return false
 	end
 end
-end # module word
 
 
-#word_vector = make_word_vector(word_list_path, 5)
+function input_trial(word_vector::Vector{String}, word_length::Int)::String
+	word_trial = ""
+	while true
+		word_trial = lowercase(cleanword(readline()))
+		if check_input_letters(word_trial, word_length) && check_word_for_validity(word_vector, word_trial)
+			break
+		else
+			println("Netter Versuch, aber das ist kein deutsches Wort!")
+		end
+	end
+
+	return word_trial
+end
+end # module wordle
 #println(word_vector)
