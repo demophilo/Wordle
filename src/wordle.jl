@@ -2,7 +2,7 @@ module wordle
 
 using JSON3
 
-export make_word_vector, cleanword, compare_strings, check_input_letters, check_word_for_validity, input_trial
+export make_word_vector, cleanword, compare_strings, check_input_letters, check_word_for_validity, input_trial, input_game_variant, get_color_dict, colorize_string, get_colorized_string_vector
 
 
 #word_list_path = "data/raw/wortliste.json"
@@ -122,6 +122,48 @@ function input_game_variant()
 		println("Bitte geben Sie eine gültige Zahl ein.")
 		number_letters = readline()
 	end
+	return number_letters
+end
+
+function get_color_dict()
+	farben = Dict(
+		"red" => "\e[31m",
+		"green" => "\e[32m",
+		"yellow" => "\e[33m",
+		"blue" => "\e[34m",
+		"purple" => "\e[35m",
+		"lightblue" => "\e[36m",
+		"white" => "\e[37m",
+		"lightred" => "\e[91m",
+		"green2" => "\e[92m",
+		"lightyellow" => "\e[93m",
+		"lightpurple" => "\e[95m",
+		"cyan" => "\e[96m"
+	)
+	return farben
+end
+
+function colorize_string(text::String, color_dict::Dict{String, String}, color::String)::String
+	_colored_string = color_dict["$color"] * text * "\e[0m"
+	return _colored_string
+end
+
+function get_colorized_string_vector(word::String, progress::Vector{Int}, color_dict::Dict)::Vector{String}
+	word_string_vector = [string(c) for c in collect(word)]
+	colorized_string_vector = Vector{String}([])
+	for i ∈ eachindex(word_string_vector)
+		if progress[i] == 2
+			colorized_string = colorize_string(word_string_vector[i], color_dict, "green2")
+		elseif progress[i] == 1
+			colorized_string = colorize_string(word_string_vector[i], color_dict, "red")
+		else
+			colorized_string = colorize_string(word_string_vector[i], color_dict, "white")
+		end
+		push!(colorized_string_vector, colorized_string)
+	end
+	return colorized_string_vector
+
 end
 
 end # module wordle
+
