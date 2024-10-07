@@ -15,8 +15,25 @@ end
     @test cleanword("âêîôû") == "aeiou"
     @test cleanword("ãõ") == "ao"
     @test cleanword("å") == "a"
-    @test cleanword("äëïöü") == "aeiou"
+    @test cleanword("äëïöü") == "äeiöü"
     @test cleanword("ç") == "c"
     @test cleanword("ñ") == "n"
     @test cleanword("Ñ") == "N"
+end
+
+@testset "compare_strings" begin
+    @test compare_strings("zinne", "zinne") == [2, 2, 2, 2, 2]
+    @test compare_strings("zinne", "tinne") == [0, 2, 2, 2, 2]
+    @test compare_strings("zinne", "nnnie") == [1, 0, 2, 1, 2]
+    @test compare_strings("zinne", "xarrs") == [0, 0, 0, 0, 0]
+    @test compare_strings("zinne", "eggau") == [1, 0, 0, 0, 0]
+    @test compare_strings("zinne", "zinnn") == [2, 2, 2, 2, 0]
+    @test compare_strings("zünne", "zinnn") == [2, 0, 2, 2, 0]
+end
+
+@testset "check_input" begin
+    @test check_input("zinne", 5) == true
+    @test check_input("zinn", 5) == false
+    @test check_input("zin nn", 5) == true
+    @test check_input("üöÄäß", 5) == true
 end
