@@ -114,5 +114,14 @@ function input_trial(word_vector::Vector{String}, word_length::Int)::String
 
 	return word_trial
 end
+
+function input_game_variant()
+	println("Wie viele Buchstaben soll das Wort haben?\nMöglich sind 4, 5, 6, 7, 8.")
+	number_letters::String = ""
+	while !(number_letters in ["4", "5", "6", "7", "8"])
+		println("Bitte geben Sie eine gültige Zahl ein.")
+		number_letters = readline()
+	end
+end
+
 end # module wordle
-#println(word_vector)
