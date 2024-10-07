@@ -37,3 +37,11 @@ end
 	@test check_input_letters("zin nn", 5) == true
 	@test check_input_letters("üöÄäß", 5) == true
 end
+
+@testset "check_word_for_validity" begin
+    word_vector = make_word_vector("../data/raw/wortliste.json", 5)
+
+    @test check_word_for_validity(word_vector, "Zinne") 
+    @test !check_word_for_validity(word_vector, "Zinn")
+    @test !check_word_for_validity(word_vector, "Zinnn") 
+end
